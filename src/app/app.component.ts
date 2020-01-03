@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Satellite } from './satellite'
+import { mapToMapExpression } from '@angular/compiler/src/render3/util';
 
 @Component({
   selector: 'app-root',
@@ -11,12 +12,24 @@ export class AppComponent {
   sourceList: Satellite[];
 
   constructor() {
-    this.sourceList = [
-      new Satellite("SiriusXM", "Communication", "2009-03-21", "LOW", true),
-      new Satellite("Cat Scanner", "Imaging", "2012-01-05", "LOW", true),
-      new Satellite("Weber Grill", "Space Debris", "1996-03-25", "HIGH", false),
-      new Satellite("GPS 938", "Positioning", "2001-11-01", "HIGH", true),
-      new Satellite("ISS", "Space Station", "1998-11-20", "LOW", true),
-    ]
-  }
+    this.sourceList = [];
+    let satellitesUrl = 'https://handlers.education.launchcode.org/static/satellites.json';
+ 
+    window.fetch(satellitesUrl).then((response) => {
+       response.json().then((data) => {
+ 
+          let fetchedSatellites : Satellite[] = data.satellites;
+          
+          // forEach is much nicer than looping.
+          // the only issue here is that I don't have any check verifying
+          // that the json data is a Satellite object
+
+          fetchedSatellites.forEach((satellite : Satellite) => {
+            this.sourceList.push(satellite)
+          })
+ 
+       },AppComponent.bind(this));
+    },AppComponent.bind(this));
+ 
+ }
 }
