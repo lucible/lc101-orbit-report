@@ -9,7 +9,13 @@
    </tr>
    <tr *ngFor="let satellite of satellites">
        <td>{{satellite.name}}</td>
-       <td>{{satellite.type}}</td>
+
+       <!-- getting an error "TypeError: "_v.context.$implicit.shouldShowWarning is not a function" -->
+       <!-- <td [class.warning]="satellite.shouldShowWarning()">{{satellite.type}}</td> -->
+
+       <!-- see orbit-list.component.ts for the below function -->
+       <td [class.warning]="shouldShowWarning(satellite)">{{satellite.type}}</td>
+
        <td>{{satellite.operational}}</td>
        <td>{{satellite.orbitType}}</td>
        <td>{{satellite.launchDate}}</td>

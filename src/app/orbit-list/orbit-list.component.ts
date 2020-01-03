@@ -14,4 +14,8 @@ export class OrbitListComponent implements OnInit {
   ngOnInit() {
   }
 
+  shouldShowWarning(x : Satellite) : boolean {
+    return (x.type.toLowerCase() === 'space debris') ? true : false
+  }
+
 }
