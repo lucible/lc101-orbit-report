@@ -7,6 +7,10 @@
     background-color: darksalmon;
 }
 
+.zebra {
+    background-color: darkgrey;
+}
+
 table {
   color: #111;
   border-radius: 5px;

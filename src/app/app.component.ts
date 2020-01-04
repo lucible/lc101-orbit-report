@@ -21,14 +21,10 @@ export class AppComponent {
        response.json().then((data) => {
  
           let fetchedSatellites : Satellite[] = data.satellites;
-          
-          // forEach is much nicer than looping.
-          // the only issue here is that I don't have any check verifying
-          // that the json data is a Satellite object
 
-          fetchedSatellites.forEach((satellite : Satellite) => {
-            this.sourceList.push(satellite)
-          })
+          fetchedSatellites
+            .map((s : Satellite) => {return new Satellite(s.name, s.type, s.launchDate, s.orbitType, s.operational)})
+            .forEach((s : Satellite) => this.sourceList.push(s))
 
           // make a copy of the sourceList to be shown to user
           this.displayList = this.sourceList.slice(0);
@@ -39,17 +35,26 @@ export class AppComponent {
  }
 
  search(searchTerm: string): void {
-   console.log('function called')
-   console.log(searchTerm)
   let matchingSatellites: Satellite[] = [];
   searchTerm = searchTerm.toLowerCase();
-  for(let i=0; i < this.sourceList.length; i++) {
-      let name = this.sourceList[i].name.toLowerCase();
-      if (name.indexOf(searchTerm) >= 0) {
-        matchingSatellites.push(this.sourceList[i]);
-      }
-  }
-  console.log(matchingSatellites)
+
+  // for(let i=0; i < this.sourceList.length; i++) {
+  //     let name = this.sourceList[i].name.toLowerCase();
+  //     if (name.indexOf(searchTerm) >= 0) {
+  //       matchingSatellites.push(this.sourceList[i]);
+  //     }
+  // }
+  
+  // completed bonus mission C
+  this.sourceList.map((s : Satellite) => {
+    let name = s.name.toLowerCase()
+    let orbit = s.orbitType.toLowerCase()
+    let type = s.type.toLowerCase()
+    if (name.indexOf(searchTerm) >= 0 || orbit.indexOf(searchTerm) >= 0 || type.indexOf(searchTerm) >= 0) {
+      matchingSatellites.push(s)
+    }
+  })
+
   // assign this.displayList to be the the array of matching satellites
   // this will cause Angular to re-make the table, but now only containing matches
   this.displayList = matchingSatellites;

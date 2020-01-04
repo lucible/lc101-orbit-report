@@ -7,14 +7,10 @@
       <th>Orbit Type</th>
       <th>Launch Date</th>
    </tr>
-   <tr *ngFor="let satellite of satellites">
+   <tr *ngFor="let satellite of satellites; let i = index" [class.zebra]="i % 2 !== 0">
        <td>{{satellite.name}}</td>
 
-       <!-- getting an error "TypeError: "_v.context.$implicit.shouldShowWarning is not a function" -->
-       <!-- <td [class.warning]="satellite.shouldShowWarning()">{{satellite.type}}</td> -->
-
-       <!-- see orbit-list.component.ts for the below function -->
-       <td [class.warning]="shouldShowWarning(satellite)">{{satellite.type}}</td>
+       <td [class.warning]="satellite.shouldShowWarning()">{{satellite.type}}</td>
 
        <td>{{satellite.operational}}</td>
        <td>{{satellite.orbitType}}</td>
