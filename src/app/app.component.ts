@@ -10,9 +10,11 @@ import { mapToMapExpression } from '@angular/compiler/src/render3/util';
 export class AppComponent {
   title = 'lc101-orbit-report';
   sourceList: Satellite[];
+  displayList: Satellite[];
 
   constructor() {
     this.sourceList = [];
+
     let satellitesUrl = 'https://handlers.education.launchcode.org/static/satellites.json';
  
     window.fetch(satellitesUrl).then((response) => {
@@ -27,9 +29,29 @@ export class AppComponent {
           fetchedSatellites.forEach((satellite : Satellite) => {
             this.sourceList.push(satellite)
           })
+
+          // make a copy of the sourceList to be shown to user
+          this.displayList = this.sourceList.slice(0);
  
        },AppComponent.bind(this));
     },AppComponent.bind(this));
  
+ }
+
+ search(searchTerm: string): void {
+   console.log('function called')
+   console.log(searchTerm)
+  let matchingSatellites: Satellite[] = [];
+  searchTerm = searchTerm.toLowerCase();
+  for(let i=0; i < this.sourceList.length; i++) {
+      let name = this.sourceList[i].name.toLowerCase();
+      if (name.indexOf(searchTerm) >= 0) {
+        matchingSatellites.push(this.sourceList[i]);
+      }
+  }
+  console.log(matchingSatellites)
+  // assign this.displayList to be the the array of matching satellites
+  // this will cause Angular to re-make the table, but now only containing matches
+  this.displayList = matchingSatellites;
  }
 }
